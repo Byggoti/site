@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <title>Pentru Tine ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Sacramento&family=Nunito:wght@600;800&family=Black+Ops+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,6 +16,13 @@
 
     <div id="back-to-top" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <div id="lb-prev" class="lb-nav prev" onclick="changeLightboxPhoto(-1, event)"><i class="fas fa-chevron-left"></i></div>
+        <img class="lightbox-content" id="lightbox-img" onclick="event.stopPropagation()">
+        <div id="lb-next" class="lb-nav next" onclick="changeLightboxPhoto(1, event)"><i class="fas fa-chevron-right"></i></div>
     </div>
 
     <div id="login-screen">
@@ -48,16 +54,16 @@
     <div id="main-content">
 
         <div class="scrap-header">
-            <h1 onclick="fireConfetti(30)">Lumea Noastra</h1>
+            <h1 id="main-title">Lumea Noastra</h1>
         </div>
 
         <div class="scrap-item item-photo-gallery">
             <div class="polaroid" style="transform: rotate(-3deg);">
                 <div class="tape"></div>
                 <div class="photo-wrapper">
-                    <button class="nav-btn prev" onclick="changePhoto(-1)"><i class="fas fa-chevron-left"></i></button>
-                    <img id="gallery-img" src="res/1.jpg" alt="Noi">
-                    <button class="nav-btn next" onclick="changePhoto(1)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="nav-btn prev" onclick="changeMiniPhoto(-1, event)"><i class="fas fa-chevron-left"></i></button>
+                    <img id="gallery-img" src="res/1.jpg" alt="Noi" onclick="openGallery('main', event)">
+                    <button class="nav-btn next" onclick="changeMiniPhoto(1, event)"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 <div class="caption" id="gallery-caption">Inceputul</div>
             </div>
@@ -75,20 +81,21 @@
         <div class="scrap-item item-player">
             <div class="music-card" style="transform: rotate(-2deg);">
                 <div class="vinyl-art"><i class="fas fa-music"></i></div>
+                <div class="tape" style="top:-15px; cursor: help;" onclick="triggerHeartbeat()" title="Secret?"></div>
                 
                 <div class="song-navigation">
-                    <button class="track-btn" onclick="changeTrack(-1)"><i class="fas fa-step-backward"></i></button>
+                    <button class="track-btn" onclick="changeTrack(-1, event)"><i class="fas fa-step-backward"></i></button>
                     <div class="song-info">
                         <h3 id="track-title">La Nesfarsit</h3>
                         <p id="track-artist">The Motans</p>
                     </div>
-                    <button class="track-btn" onclick="changeTrack(1)"><i class="fas fa-step-forward"></i></button>
+                    <button class="track-btn" onclick="changeTrack(1, event)"><i class="fas fa-step-forward"></i></button>
                 </div>
 
                 <div class="player-controls">
-                    <button class="play-btn" onclick="togglePlay()"><i class="fas fa-play" id="play-icon"></i></button>
+                    <button class="play-btn" onclick="togglePlay(event)"><i class="fas fa-play" id="play-icon"></i></button>
                     <div class="progress-container">
-                        <input type="range" id="seek-bar" value="0" oninput="seek(this)">
+                        <input type="range" id="seek-bar" value="0" oninput="seek(this, event)" onclick="event.stopPropagation()">
                         <div class="timers"><span id="curr-time">0:00</span><span id="dur-time">--:--</span></div>
                     </div>
                 </div>
@@ -117,8 +124,32 @@
         <div class="scrap-item item-polaroid-2">
             <div class="polaroid" style="transform: rotate(3deg);">
                 <div class="tape"></div>
-                <img src="res/2.jpg" alt="Noi">
+                <img src="res/2.jpg" alt="Noi" onclick="openGallery('smile', event)">
                 <div class="caption">Zambetul taaaau🫠</div>
+            </div>
+        </div>
+
+        <div class="scrap-item item-cipher">
+            <div class="cipher-card" style="transform: rotate(-2deg);">
+                <div class="tape"></div>
+                <div id="cipher-interface">
+                    <div class="cipher-icon">🔐</div>
+                    <h3>Cifrul Emoțiilor</h3>
+                    <p style="font-size:0.9rem; color:#666;">Data primului nostru sărut (ZZLL)</p>
+                    <input type="text" id="cipher-input" maxlength="4" placeholder="0000" inputmode="numeric">
+                    <button class="btn-cipher" onclick="checkCipher()">Deblochează</button>
+                </div>
+                
+                <div id="secret-letter" style="display: none;">
+                    <h3>Dragostea mea... ❤️</h3>
+                    <div class="letter-text">
+                        <p>Dacă citești asta, înseamnă că nu ai uitat data noastră specială (06.09).<br><br>
+                        Vreau să știi că fiecare zi cu tine este un cadou. Ești motivul zâmbetului meu și...<br>
+                        [AICI POTI SCRIE RESTUL SCRISORII TALE PENTRU EA]<br><br>
+                        Te iubesc infinit! ♾️</p>
+                    </div>
+                    <button class="btn-cipher" onclick="resetCipher()">Închide</button>
+                </div>
             </div>
         </div>
 
@@ -134,7 +165,7 @@
         <div class="scrap-item item-polaroid-3">
             <div class="polaroid" style="transform: rotate(5deg);">
                 <div class="tape"></div>
-                <img src="res/3.jpg" alt="Noi">
+                <img src="res/3.jpg" alt="Noi" onclick="openGallery('love', event)">
                 <div class="caption">Te iubesc!</div>
             </div>
         </div>
