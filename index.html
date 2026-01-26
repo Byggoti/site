@@ -3,240 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>❤️for youuu❤️</title>
+    <title>Pentru Tine ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&family=Sacramento&family=Nunito:wght@600;800&family=Black+Ops+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-color: #fdf6e3;
-            --accent-pink: #d63384;
-            --soft-pink: #ffc2d1;
-            --paper-shadow: 5px 10px 20px rgba(0,0,0,0.15);
-        }
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-color);
-            background-image: 
-                linear-gradient(90deg, rgba(200,200,200,0.1) 1px, transparent 1px),
-                linear-gradient(rgba(200,200,200,0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            font-family: 'Patrick Hand', cursive;
-            overflow-x: hidden;
-            color: #444;
-            user-select: none;
-            scroll-behavior: smooth;
-            position: relative; /* Necesar pentru pozitionarea absoluta a hamsterilor */
-            min-height: 100vh;
-        }
-
-        /* Fundal animat - cel mai in spate (z-index 0) */
-        .floating-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-        .float-item { position: absolute; opacity: 0.15; color: var(--accent-pink); animation: floatUp linear infinite; }
-        @keyframes floatUp { 0% { transform: translateY(110vh); opacity:0; } 50% { opacity:0.2; } 100% { transform: translateY(-10vh) rotate(360deg); opacity:0; } }
-
-        /* --- LOGIN --- */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ffe2e2 0%, #fff9c4 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 5000; transition: opacity 0.6s ease-out; /* Z-index maxim */
-        }
-        .login-card {
-            background: rgba(255,255,255,0.95); padding: 3rem; border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.15); text-align: center; border: 4px solid white;
-            max-width: 90%; width: 350px;
-        }
-        h1 { font-family: 'Sacramento', cursive; font-size: 3.5rem; color: var(--accent-pink); margin: 0 0 10px 0; }
-        input {
-            padding: 12px; font-size: 1.2rem; border: 2px solid #ffb7b2; border-radius: 12px;
-            outline: none; font-family: 'Nunito', sans-serif; text-align: center; width: 80%; margin-bottom: 20px; color: var(--accent-pink);
-        }
-        .btn-main {
-            padding: 12px 40px; background: var(--accent-pink); color: white; border: none;
-            border-radius: 50px; font-size: 1.2rem; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 800;
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3); transition: 0.1s;
-        }
-        .btn-main:active { transform: scale(0.95); }
-        .error-msg { color: #e91e63; margin-top: 15px; display: none; animation: shake 0.4s; }
-
-        /* --- LAYOUT PRINCIPAL --- */
-        #main-content {
-            display: none; position: relative; 
-            z-index: 10; /* Continutul e deasupra hamsterilor */
-            max-width: 900px; margin: 0 auto;
-            padding: 50px 20px 150px 20px; flex-direction: column; gap: 70px;
-        }
-        .visible { display: flex !important; }
-        .item-container { display: flex; width: 100%; opacity: 0; transform: translateY(50px); transition: 0.8s ease-out; position: relative; }
-        .item-container.show { opacity: 1; transform: translateY(0); }
-        .left-align { justify-content: flex-start; padding-left: 20px; }
-        .right-align { justify-content: flex-end; padding-right: 20px; }
-        .center-align { justify-content: center; }
-
-        /* --- DESIGN ELEMENTS --- */
-        .tape {
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(-2deg);
-            width: 100px; height: 35px; background: rgba(255,255,255,0.5);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); backdrop-filter: blur(2px);
-        }
-
-        .polaroid {
-            background: white; padding: 15px 15px 50px 15px; box-shadow: var(--paper-shadow);
-            width: 280px; text-align: center; transform: rotate(var(--rot)); transition: 0.3s;
-            position: relative; cursor: pointer;
-        }
-        .polaroid:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
-        .polaroid img { width: 100%; height: auto; border-radius: 2px; filter: sepia(10%); border: 1px solid #eee; }
-        .caption { font-family: 'Indie Flower', cursive; margin-top: 15px; font-size: 1.4rem; color: #555; }
-
-        /* --- HAMSTER HUNT (UPDATED) --- */
-        .hamster-hunt {
-            position: absolute; font-size: 2.5rem; cursor: pointer; 
-            z-index: 5; /* Intre fundal (0) si continut (10) */
-            opacity: 0.6; /* Mai transparenti in fundal */
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); transition: 0.3s;
-            animation: peek 3s infinite ease-in-out;
-            --base-rot: 0deg; /* Setat din JS */
-        }
-        @keyframes peek { 
-            0%,100% { transform: rotate(var(--base-rot)) scale(1); } 
-            50% { transform: rotate(calc(var(--base-rot) + 10deg)) scale(1.1); } 
-        }
-        .hamster-hunt:hover { transform: scale(1.3) rotate(0deg) !important; opacity: 1; z-index: 15; }
-        .hamster-hunt.found {
-            animation: zoomOut 0.5s forwards !important; pointer-events: none;
-        }
-        @keyframes zoomOut { 0% { transform: scale(1.3) rotate(0deg); opacity: 1; } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
-
-        /* --- SPECIAL REWARD OVERLAY --- */
-        #reward-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 6000; flex-direction: column; justify-content: center; align-items: center;
-            color: white; text-align: center;
-        }
-        .reward-msg { font-family: 'Sacramento', cursive; font-size: 4rem; color: #ff8fa3; animation: popIn 0.8s; }
-        .reward-sub { font-family: 'Nunito', sans-serif; font-size: 1.5rem; margin-top: 20px; color: #fff; }
-        .close-reward {
-            margin-top: 30px; padding: 10px 30px; background: white; color: #333; border: none;
-            border-radius: 50px; font-size: 1.2rem; cursor: pointer; transition: 0.2s;
-        }
-        .close-reward:hover { transform: scale(1.1); }
-
-        /* --- BACK TO TOP --- */
-        #back-to-top {
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-            background: var(--accent-pink); color: white; border-radius: 50%;
-            display: none; justify-content: center; align-items: center;
-            font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000; transition: 0.3s; border: 2px solid white;
-        }
-        #back-to-top:hover { transform: translateY(-5px); background: #b01b63; }
-
-        /* --- QUIZ --- */
-        .quiz-card {
-            background: #fff; width: 300px; padding: 25px; border-radius: 2px;
-            box-shadow: var(--paper-shadow); transform: rotate(var(--rot));
-            background-image: linear-gradient(#f1f1f1 1px, transparent 1px); background-size: 100% 1.5em;
-            position: relative; transition: 0.3s; border-left: 5px solid var(--accent-pink);
-        }
-        .quiz-card:hover { transform: scale(1.02) rotate(0deg); z-index: 20; }
-        .quiz-header { font-family: 'Nunito', sans-serif; font-weight: 800; color: var(--accent-pink); margin-bottom: 15px; font-size: 1.2rem; }
-        .quiz-question { font-size: 1.3rem; margin-bottom: 15px; line-height: 1.4; }
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-        .quiz-btn {
-            background: transparent; border: 2px solid #aaa; border-radius: 10px; padding: 8px;
-            cursor: pointer; font-family: 'Patrick Hand', cursive; font-size: 1.2rem; transition: 0.2s;
-        }
-        .quiz-btn:hover { background: #eee; border-color: #666; }
-        .quiz-btn.correct { background: #4caf50; color: white; border-color: #4caf50; }
-        .quiz-btn.wrong { background: #f44336; color: white; border-color: #f44336; animation: shake 0.3s; }
-
-        /* --- PLAYER --- */
-        .music-card {
-            background: #f8f0fc; width: 340px; border-radius: 20px; padding: 25px;
-            box-shadow: var(--paper-shadow); border: 4px solid white; display: flex; flex-direction: column; align-items: center;
-            transform: rotate(var(--rot)); transition: 0.3s; position: relative;
-        }
-        .music-card:hover { transform: scale(1.02) rotate(0deg); z-index: 20; }
-        .vinyl-art {
-            width: 60px; height: 60px; border-radius: 50%; background: var(--accent-pink); color: white;
-            display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-bottom: 10px;
-            animation: spin 3s linear infinite; animation-play-state: paused;
-        }
-        .playing .vinyl-art { animation-play-state: running; }
-        @keyframes spin { 100% {transform: rotate(360deg);} }
-        .song-info h3 { font-family: 'Nunito', sans-serif; margin: 0; color: #333; font-size: 1.2rem; }
-        .song-info p { margin: 5px 0 15px 0; color: #777; font-size: 0.9rem; }
-        .player-controls { width: 100%; display: flex; align-items: center; gap: 15px; background: white; padding: 10px; border-radius: 15px; }
-        .play-btn {
-            width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--accent-pink); color: white;
-            font-size: 1.1rem; cursor: pointer; flex-shrink: 0; display: flex; justify-content: center; align-items: center;
-        }
-        .progress-container { flex-grow: 1; display: flex; flex-direction: column; }
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; cursor: pointer; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: #eee; border-radius: 5px; }
-        input[type=range]::-webkit-slider-thumb { height: 14px; width: 14px; border-radius: 50%; background: var(--accent-pink); -webkit-appearance: none; margin-top: -4px; }
-        .timers { display: flex; justify-content: space-between; font-size: 0.7rem; font-family: 'Nunito', sans-serif; color: #888; font-weight: bold; }
-
-        /* --- STICKY NOTES --- */
-        .sticky {
-            width: 240px; height: 240px; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; font-family: 'Indie Flower', cursive; font-size: 1.5rem; box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            transform: rotate(var(--rot)); transition: 0.3s; position: relative; cursor: pointer;
-        }
-        .sticky:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
-        .sticky.yellow { background: #fff9c4; }
-        .sticky.green { background: #e0f2f1; border: 2px dashed #4db6ac; }
-        .sticky.blue { background: #dbeaff; }
-        .sticky.pink { background: #ffcce0; }
-        .answer-box { margin-top: 15px; padding-top: 10px; border-top: 2px dotted rgba(0,0,0,0.1); color: var(--accent-pink); font-weight: bold; display: none; width: 100%; }
-        .click-hint { font-size: 0.9rem; color: #888; margin-top: 5px; text-decoration: underline; }
-
-        /* --- INVITATIE --- */
-        #modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center;
-        }
-        .invite-content {
-            background: white; padding: 40px; border-radius: 20px; border: 6px double var(--accent-pink); text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.25); animation: popIn 0.5s; position: relative;
-        }
-        @keyframes popIn { from{transform:scale(0.5);opacity:0;} to{transform:scale(1);opacity:1;} }
-        
-        .stamp {
-            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
-            color: #2e7d32; border: 0.3rem solid #2e7d32; padding: 0.5rem 1rem;
-            font-family: 'Black Ops One', cursive; font-size: 3rem; text-transform: uppercase;
-            border-radius: 10px; opacity: 0; mix-blend-mode: multiply; z-index: 3001; pointer-events: none;
-        }
-        .stamp.visible { display: block; animation: stamp-land 0.3s forwards; }
-        @keyframes stamp-land { 0% { opacity:0; transform: translate(-50%, -50%) rotate(-15deg) scale(3); } 100% { opacity:0.8; transform: translate(-50%, -50%) rotate(-15deg) scale(1); } }
-
-        @media (max-width: 768px) { .item-container { justify-content: center !important; } h1 { font-size: 2.5rem; } }
-        .confetti { position: absolute; width: 10px; height: 10px; animation: fall linear forwards; z-index: 9999; }
-        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="floating-bg" id="bg-animation"></div>
-    <audio id="audio1" src="1.mp3" preload="metadata"></audio>
-    <audio id="audio2" src="2.mp3" preload="metadata"></audio>
-    <audio id="audio3" src="3.mp3" preload="metadata"></audio>
+    
+    <audio id="main-audio" preload="metadata"></audio>
 
     <div id="back-to-top" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
-    </div>
-
-    <div id="reward-overlay">
-        <div class="reward-msg">Bravo Iubire! 🎉</div>
-        <div class="reward-sub">Ai gasit toti hamsterii ascunsi! ❤️</div>
-        <button class="close-reward" onclick="closeReward()">Yey! 🥰</button>
     </div>
 
     <div id="login-screen">
@@ -257,41 +36,34 @@
                 <p>⏰ <strong>Ora 19:00</strong></p>
                 <p>📍 <strong>Locul nostru secret... 🤫</strong></p>
             </div>
-            <button class="btn-main" onclick="acceptInvite()">ACCEPT! 🥰</button>
+            <div class="invite-actions">
+                <button class="btn-main" onclick="acceptInvite()">DA! 🥰</button>
+                <button class="btn-reject" id="btnReject" onmouseover="moveReject()" onclick="moveReject()">Nu pot...</button>
+            </div>
             <div id="stamp" class="stamp">ACCEPTED</div>
         </div>
     </div>
 
     <div id="main-content">
 
-        <div class="item-container center-align">
-            <h1 style="font-size: 4rem; text-align:center; cursor:pointer;" onclick="fireConfetti(30); playPop()">Lumea Noastra</h1>
+        <div class="scrap-header">
+            <h1 style="font-size: 4.5rem; cursor:pointer;" onclick="fireConfetti(30)">Lumea Noastra</h1>
         </div>
 
-        <div class="item-container left-align">
-            <div class="polaroid" style="--rot: -3deg;" onclick="popEffect(this); playPop()">
+        <div class="scrap-item item-photo-gallery">
+            <div class="polaroid" style="transform: rotate(-3deg);">
                 <div class="tape"></div>
-                <img src="1.jpg" alt="Noi">
-                <div class="caption">Inceputul</div>
-            </div>
-        </div>
-
-        <div class="item-container right-align">
-            <div class="music-card" id="player1" style="--rot: 2deg;" onclick="playPop()">
-                <div class="vinyl-art"><i class="fas fa-music"></i></div>
-                <div class="song-info"><h3>La Nesfarsit</h3><p>The Motans</p></div>
-                <div class="player-controls">
-                    <button class="play-btn" onclick="event.stopPropagation(); togglePlay('audio1', 'player1')"><i class="fas fa-play"></i></button>
-                    <div class="progress-container">
-                        <input type="range" value="0" oninput="seek('audio1', this)" onclick="event.stopPropagation()">
-                        <div class="timers"><span>0:00</span><span class="dur">...</span></div>
-                    </div>
+                <div class="photo-wrapper">
+                    <button class="nav-btn prev" onclick="changePhoto(-1)"><i class="fas fa-chevron-left"></i></button>
+                    <img id="gallery-img" src="res/1.jpg" alt="Noi">
+                    <button class="nav-btn next" onclick="changePhoto(1)"><i class="fas fa-chevron-right"></i></button>
                 </div>
+                <div class="caption" id="gallery-caption">Inceputul</div>
             </div>
         </div>
 
-        <div class="item-container center-align">
-            <div class="sticky yellow" style="--rot: -2deg;" onclick="reveal(this); playPop()">
+        <div class="scrap-item item-sticky-1">
+            <div class="sticky yellow" style="transform: rotate(2deg);" onclick="reveal(this)">
                 <div class="tape"></div>
                 <p>Cine te iubeste cel mai mult?</p>
                 <span class="click-hint">(click)</span>
@@ -299,8 +71,31 @@
             </div>
         </div>
 
-        <div class="item-container left-align">
-            <div class="quiz-card" style="--rot: 3deg;">
+        <div class="scrap-item item-player">
+            <div class="music-card" style="transform: rotate(-2deg);">
+                <div class="vinyl-art"><i class="fas fa-music"></i></div>
+                
+                <div class="song-navigation">
+                    <button class="track-btn" onclick="changeTrack(-1)"><i class="fas fa-step-backward"></i></button>
+                    <div class="song-info">
+                        <h3 id="track-title">La Nesfarsit</h3>
+                        <p id="track-artist">The Motans</p>
+                    </div>
+                    <button class="track-btn" onclick="changeTrack(1)"><i class="fas fa-step-forward"></i></button>
+                </div>
+
+                <div class="player-controls">
+                    <button class="play-btn" onclick="togglePlay()"><i class="fas fa-play" id="play-icon"></i></button>
+                    <div class="progress-container">
+                        <input type="range" id="seek-bar" value="0" oninput="seek(this)">
+                        <div class="timers"><span id="curr-time">0:00</span><span id="dur-time">--:--</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scrap-item item-quiz">
+            <div class="quiz-card" style="transform: rotate(4deg);">
                 <div class="tape"></div>
                 <div class="quiz-header">Mini Quiz ⚡</div>
                 <div id="quiz-q" class="quiz-question">...</div>
@@ -308,30 +103,8 @@
             </div>
         </div>
 
-        <div class="item-container right-align">
-            <div class="music-card" id="player2" style="--rot: -2deg;" onclick="playPop()">
-                <div class="vinyl-art"><i class="fas fa-music"></i></div>
-                <div class="song-info"><h3>Doar Noi</h3><p>Mark Stam</p></div>
-                <div class="player-controls">
-                    <button class="play-btn" onclick="event.stopPropagation(); togglePlay('audio2', 'player2')"><i class="fas fa-play"></i></button>
-                    <div class="progress-container">
-                        <input type="range" value="0" oninput="seek('audio2', this)" onclick="event.stopPropagation()">
-                        <div class="timers"><span>0:00</span><span class="dur">...</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="item-container center-align" style="position:relative;">
-            <div class="polaroid" style="--rot: 4deg;" onclick="popEffect(this); playPop()">
-                <div class="tape"></div>
-                <img src="2.jpg" alt="Noi">
-                <div class="caption">Zambetul taaaau🫠🫠🫠</div>
-            </div>
-        </div>
-
-        <div class="item-container left-align">
-            <div class="sticky green" style="--rot: -3deg;" onclick="showInvite(); playPop()">
+        <div class="scrap-item item-invite">
+            <div class="sticky green" style="transform: rotate(-4deg);" onclick="showInvite()">
                 <div class="tape"></div>
                 <p style="font-weight: bold; color: #2e7d32;">💌 Important!</p>
                 <p>Am o intrebare...</p>
@@ -340,22 +113,16 @@
             </div>
         </div>
 
-        <div class="item-container right-align">
-            <div class="music-card" id="player3" style="--rot: 3deg;" onclick="playPop()">
-                <div class="vinyl-art"><i class="fas fa-music"></i></div>
-                <div class="song-info"><h3>Tot ce am mai bun</h3><p>Noua Unspe</p></div>
-                <div class="player-controls">
-                    <button class="play-btn" onclick="event.stopPropagation(); togglePlay('audio3', 'player3')"><i class="fas fa-play"></i></button>
-                    <div class="progress-container">
-                        <input type="range" value="0" oninput="seek('audio3', this)" onclick="event.stopPropagation()">
-                        <div class="timers"><span>0:00</span><span class="dur">...</span></div>
-                    </div>
-                </div>
+        <div class="scrap-item item-polaroid-2">
+            <div class="polaroid" style="transform: rotate(3deg);">
+                <div class="tape"></div>
+                <img src="res/2.jpg" alt="Noi">
+                <div class="caption">Zambetul taaaau🫠</div>
             </div>
         </div>
 
-        <div class="item-container center-align">
-            <div class="sticky pink" style="--rot: -2deg;" onclick="reveal(this); playPop()">
+        <div class="scrap-item item-puzzle">
+            <div class="sticky pink" style="transform: rotate(-2deg);" onclick="reveal(this)">
                 <div class="tape"></div>
                 <p><strong>Matematica:</strong><br>1+1 = 2<br>Eu + Tu = ?</p>
                 <span class="click-hint">(calculeaza)</span>
@@ -363,270 +130,22 @@
             </div>
         </div>
 
-        <div class="item-container right-align">
-            <div class="polaroid" style="--rot: 5deg;" onclick="popEffect(this); playPop()">
+        <div class="scrap-item item-polaroid-3">
+            <div class="polaroid" style="transform: rotate(5deg);">
                 <div class="tape"></div>
-                <img src="3.jpg" alt="Noi">
+                <img src="res/3.jpg" alt="Noi">
                 <div class="caption">Te iubesc!</div>
             </div>
         </div>
 
-        <div class="item-container center-align" style="margin-top: 50px;">
-             <p style="font-size: 1.5rem; color: #d63384; border-bottom: 2px dashed #d63384;">Abia astept sa ne vedem! ❤️‍🔥</p>
-        </div>
-
     </div>
 
-    <script>
-        // --- 1. WEB AUDIO API ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playPop() {
-            if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime+0.1);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.1);
-            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime+0.1);
-        }
+    <div style="text-align: center; margin: 100px 0 50px 0;">
+        <p style="font-size: 1.5rem; color: #d63384; font-family: 'Patrick Hand', cursive; display: inline-block; border-bottom: 2px dashed #d63384;">
+            Abia astept sa ne vedem! ❤️‍🔥
+        </p>
+    </div>
 
-        function playStampSound() {
-             if(audioCtx.state === 'suspended') audioCtx.resume();
-             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-             osc.type = 'square'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-             osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime+0.15);
-             gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-             gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+0.15);
-             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime+0.15);
-        }
-
-        function playWrong() {
-             if(audioCtx.state === 'suspended') audioCtx.resume();
-             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-             osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-             osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime+0.2);
-             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-             gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime+0.2);
-             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime+0.2);
-        }
-
-        // --- 2. LOGICA HAMSTERI (REVIZUIT - POZITIONARE RANDOM IN FUNDAL) ---
-        let hamstersFound = 0;
-        
-        function spawnHamsters() {
-            // Asteptam sa fie vizibil continutul pentru a calcula inaltimea corecta
-            setTimeout(() => {
-                const contentHeight = document.getElementById('main-content').offsetHeight;
-                const body = document.body;
-
-                for(let i = 0; i < 3; i++) {
-                    let h = document.createElement('div');
-                    h.className = 'hamster-hunt';
-                    h.innerText = '🐹';
-                    
-                    // Pozitionare random pe toata inaltimea paginii, dar nu chiar la margini
-                    const randomTop = Math.random() * (contentHeight - 100) + 50; 
-                    const randomLeft = Math.random() * 90 + 5; // intre 5% si 95% latime
-
-                    h.style.top = randomTop + 'px';
-                    h.style.left = randomLeft + '%';
-                    h.style.setProperty('--base-rot', `${Math.random() * 40 - 20}deg`);
-                    
-                    h.onclick = function() { foundHamster(this); };
-                    body.appendChild(h);
-                }
-            }, 1000); // Mic delay dupa login
-        }
-
-        function foundHamster(el) {
-            if(el.classList.contains('found')) return;
-            event.stopPropagation();
-            playPop();
-            el.classList.add('found');
-            hamstersFound++;
-            
-            if(hamstersFound === 3) {
-                setTimeout(() => {
-                    document.getElementById('reward-overlay').style.display = 'flex';
-                    fireConfetti(300);
-                }, 800);
-            }
-        }
-        function closeReward() {
-            document.getElementById('reward-overlay').style.display = 'none';
-        }
-
-        // --- 3. BACK TO TOP ---
-        window.onscroll = function() {
-            const btn = document.getElementById('back-to-top');
-            if(document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btn.style.display = 'flex';
-            } else {
-                btn.style.display = 'none';
-            }
-        };
-        function scrollToTop() {
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        // --- 4. LOGIN ---
-        function tryLogin() {
-            const pass = document.getElementById('pass').value;
-            if (pass.trim() === "27.08.2025") {
-                playPop();
-                document.getElementById('login-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-content').classList.add('visible');
-                    initAnimations(); loadQuiz(); fireConfetti(50);
-                    spawnHamsters(); // Generam hamsterii dupa login
-                }, 600);
-            } else { document.getElementById('err').style.display = 'block'; }
-        }
-
-        // --- 5. ANIMATII ---
-        function initAnimations() {
-            const bg = document.getElementById('bg-animation');
-            const icons = ['❤️', '⭐', '🌸', '💌'];
-            for(let i=0; i<15; i++){
-                let el = document.createElement('div');
-                el.className = 'float-item';
-                el.innerText = icons[Math.floor(Math.random()*icons.length)];
-                el.style.left = Math.random()*100 + 'vw';
-                el.style.animationDuration = (Math.random()*5 + 5) + 's';
-                el.style.fontSize = (Math.random()*20 + 20) + 'px';
-                bg.appendChild(el);
-            }
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if(entry.isIntersecting){ entry.target.classList.add('show'); observer.unobserve(entry.target); }
-                });
-            }, {threshold:0.1});
-            document.querySelectorAll('.item-container').forEach(el => observer.observe(el));
-        }
-
-        // --- 6. MINI QUIZ ---
-        const quizData = [
-            { q: "Care e culoarea mea preferata?", a: ["Roz", "Negru", "Albastru"], c: 0 },
-            { q: "Cine gateste mai bine?", a: ["Eu", "Tu", "Glovo"], c: 1 },
-            { q: "Unde ne simtim cel mai bine?", a: ["Afara", "Acasa", "In pat"], c: 2 }
-        ];
-        let currentQ = 0;
-
-        function loadQuiz() {
-            if(currentQ >= quizData.length) {
-                document.querySelector('.quiz-card').innerHTML = `<div class='tape'></div><h3>Bravo iubire! ❤️</h3><p>Ai castigat un pupic!</p>`;
-                fireConfetti(50);
-                return;
-            }
-            const data = quizData[currentQ];
-            document.getElementById('quiz-q').innerText = data.q;
-            const opts = document.getElementById('quiz-opts');
-            opts.innerHTML = '';
-            data.a.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'quiz-btn';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(btn, idx, data.c);
-                opts.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(btn, idx, correctIdx) {
-            if(idx === correctIdx) {
-                playPop();
-                btn.classList.add('correct');
-                setTimeout(() => { currentQ++; loadQuiz(); }, 600);
-            } else {
-                playWrong();
-                btn.classList.add('wrong');
-                setTimeout(() => btn.classList.remove('wrong'), 500);
-            }
-        }
-
-        // --- 7. AUDIO ---
-        let intervals = {};
-        function formatTime(s) {
-            if (isNaN(s) || s === Infinity) return "0:00";
-            let m = Math.floor(s/60), sec = Math.floor(s%60);
-            return m + ":" + (sec<10?"0":"") + sec;
-        }
-        function togglePlay(aid, pid) {
-            playPop();
-            const aud = document.getElementById(aid);
-            const card = document.getElementById(pid);
-            const isPlaying = !aud.paused;
-
-            ['audio1','audio2','audio3'].forEach((id,idx) => {
-                if(id!==aid){
-                    const oa = document.getElementById(id);
-                    const oc = document.getElementById(`player${idx+1}`);
-                    oa.pause(); oc.classList.remove('playing');
-                    oc.querySelector('.play-btn i').className='fas fa-play';
-                    clearInterval(intervals[id]);
-                }
-            });
-
-            const icon = card.querySelector('.play-btn i');
-            const range = card.querySelector('input[type=range]');
-            const curr = card.querySelector('.timers span:first-child');
-            const total = card.querySelector('.dur');
-
-            if(isPlaying){
-                aud.pause(); card.classList.remove('playing'); icon.className='fas fa-play';
-                clearInterval(intervals[aid]);
-            } else {
-                aud.play(); card.classList.add('playing'); icon.className='fas fa-pause';
-                if(total.innerText==='...') total.innerText = formatTime(aud.duration);
-                intervals[aid] = setInterval(() => {
-                    range.value = (aud.currentTime/aud.duration)*100 || 0;
-                    curr.innerText = formatTime(aud.currentTime);
-                    if(aud.ended) {
-                        aud.pause(); card.classList.remove('playing'); icon.className='fas fa-play';
-                        range.value=0; clearInterval(intervals[aid]);
-                    }
-                }, 500);
-            }
-        }
-        function seek(aid, el) {
-            const aud = document.getElementById(aid);
-            if(aud.duration) aud.currentTime = aud.duration * (el.value/100);
-        }
-        window.addEventListener('load', () => {
-            ['audio1','audio2','audio3'].forEach((id,idx) => {
-                const a = document.getElementById(id);
-                const d = document.querySelector(`#player${idx+1} .dur`);
-                a.onloadedmetadata = () => d.innerText = formatTime(a.duration);
-            });
-        });
-
-        // --- 8. INTERACTIUNI ---
-        function popEffect(el) { el.style.transform = `scale(1.1) rotate(0deg)`; setTimeout(() => { el.style.transform = `scale(1) rotate(var(--rot))`; }, 300); }
-        function reveal(el) { const b = el.querySelector('.answer-box'); b.style.display = (b.style.display==='block')?'none':'block'; }
-        function showInvite() { document.getElementById('modal-overlay').style.display='flex'; }
-        
-        function acceptInvite() {
-            playStampSound();
-            const s = document.getElementById('stamp');
-            s.classList.add('visible');
-            fireConfetti(150);
-            setTimeout(() => { document.getElementById('modal-overlay').style.display='none'; }, 3500);
-        }
-
-        function fireConfetti(c) {
-            const cols = ['#d63384','#ff8fa3','#ffd700','#4caf50'];
-            for(let i=0; i<c; i++){
-                let d = document.createElement('div');
-                d.className='confetti';
-                d.style.background=cols[Math.floor(Math.random()*cols.length)];
-                d.style.left=Math.random()*100+'vw';
-                d.style.top='-10px';
-                d.style.animationDuration=(Math.random()*3+2)+'s';
-                document.body.appendChild(d);
-                setTimeout(()=>d.remove(), 5000);
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
