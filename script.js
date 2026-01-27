@@ -187,7 +187,7 @@ function checkCipher() {
     const input = document.getElementById('cipher-input');
     // NU apelam playClickSound aici
     
-    if(input.value === "0609") {
+    if(input.value === "0509") {
         playSuccessSound();
         fireConfetti(50);
         document.getElementById('cipher-interface').style.display = 'none';
@@ -217,7 +217,7 @@ document.addEventListener('dblclick', function(e) {
 // --- LOGIN ---
 function tryLogin() {
     const pass = document.getElementById('pass').value;
-    if (pass.trim() === "27.08.2025") {
+    if (pass.trim() === "27082025") {
         playSuccessSound();
         sendDiscordNotification("✅ A intrat pe site (Parola corecta)!");
         document.getElementById('login-screen').style.opacity = '0';
