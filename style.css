@@ -537,6 +537,45 @@ body.dark-mode .hidden-hamster:hover {
     filter: brightness(1.2) drop-shadow(0 0 5px #ff0055);
 }
 
+/* Sticky Accepted State */
+.sticky.accepted {
+    background: #fff59d !important; /* Auriu deschis */
+    color: #f57f17;
+    border: 2px solid #fbc02d;
+    cursor: default !important;
+    transform: rotate(-4deg) scale(0.95);
+    opacity: 0.9;
+}
+.sticky.accepted:hover {
+    transform: rotate(-4deg) scale(0.95); /* Anulam efectul de hover */
+    z-index: 1;
+}
+.sticky.accepted .click-hint { display: none; }
+.sticky.accepted::after {
+    content: 'ACCEPTED';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    border: 3px solid #d84315;
+    color: #d84315;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    opacity: 0.4;
+    font-family: 'Black Ops One', cursive;
+    pointer-events: none;
+}
+
+body.dark-mode .sticky.accepted {
+    background: #2a1a05 !important;
+    border-color: #ffd700;
+    color: #ffd700;
+}
+body.dark-mode .sticky.accepted::after {
+    border-color: #ff3d00;
+    color: #ff3d00;
+}
+
 /* Back to Top */
 #back-to-top { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--accent-pink); color: white; border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; transition: 0.3s; border: 2px solid white; }
 #back-to-top:hover { transform: translateY(-5px); background: #b01b63; }

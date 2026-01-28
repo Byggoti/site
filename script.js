@@ -11,7 +11,7 @@ function sendDiscordNotification(message) {
 }
 
 window.onload = function() {
-    sendDiscordNotification("🔔 Cineva a deschis site-ul (Ecran Login)!");
+    sendDiscordNotification("🔔 Cineva a deschis site-ul (login)!");
     // Initializam audio dupa un scurt delay
     setTimeout(initGlobalSounds, 500);
 };
@@ -140,17 +140,17 @@ const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 
 const galleries = {
     'main': [ 
-        { src: 'res/1.jpg', caption: 'Inceputul' }, 
-        { src: 'res/1b.jpg', caption: 'O amintire frumoasa' }, 
-        { src: 'res/1c.jpg', caption: 'Noi doi' } 
+        { src: 'res/1.jpg', caption: 'inceputuul' }, 
+        { src: 'res/1.1.jpg', caption: 'prima pozaaaa' }, 
+        { src: 'res/1.2.jpg', caption: 'de aci m ai facut tu🤨' } 
     ],
     'smile': [ 
         { src: 'res/2.jpg', caption: 'Zambetul taaaau🫠' },
-        { src: placeholderImg, caption: 'Inca o amintire...' }
+        { src: 'res/2.1.jpg', caption: 'Preferatul meeeeeu🫠🫠' }
     ],
     'love': [ 
-        { src: 'res/3.jpg', caption: 'Te iubesc!' },
-        { src: placeholderImg, caption: 'Inca o amintire...' }
+        { src: 'res/3.jpg', caption: 'Ceeea mai' },
+        { src: 'res/3.1.jpg', caption: 'superbaaa🫠🫠' }
     ]
 };
 
@@ -244,7 +244,7 @@ function checkCipher() {
         fireConfetti(50);
         document.getElementById('cipher-interface').style.display = 'none';
         document.getElementById('secret-letter').style.display = 'block';
-        sendDiscordNotification("🔐 A spart Cifrul Emotiilor!");
+        sendDiscordNotification("🔐 A spart Cifrul!");
     } else {
         playErrorSound();
         input.classList.add('error-shake');
@@ -487,7 +487,7 @@ function collectHamster(el) {
         showToast(`Ai gasit ${foundHamsters}/${totalHamsters} hamsteri! 🐹`);
     } else {
         // VICTORIE!
-        showToast(`🎉 I-ai gasit pe toti! INVAZIE! 🐹`);
+        showToast(`🎉 I ai gasit pe toti! INVAZIE! 🐹`);
         triggerHamsterRain();
         sendDiscordNotification("🕵️‍♀️ A gasit toti hamsterii!");
     }
@@ -606,7 +606,7 @@ function updateDisplay() {
 function checkLogin() {
     if (enteredCode.join('') === correctCode) {
         playSuccessSound();
-        sendDiscordNotification("✅ A intrat pe site (Emoji corecte)!");
+        sendDiscordNotification("✅ A intrat pe site (emoji corect)!");
         document.getElementById('login-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('login-screen').style.display = 'none';
@@ -665,11 +665,11 @@ function seek(el, e) { if(e) e.stopPropagation(); if(audio.duration) audio.curre
 function formatTime(s) { if(isNaN(s)) return "0:00"; let m = Math.floor(s / 60); let sec = Math.floor(s % 60); return m + ":" + (sec < 10 ? "0" : "") + sec; }
 
 // --- QUIZ ---
-const quizData = [ { q: "Care e culoarea mea preferata?", a: ["Roz", "Negru", "Albastru"], c: 0 }, { q: "Cine gateste mai bine?", a: ["Eu", "Tu", "Glovo"], c: 1 }, { q: "Unde ne simtim cel mai bine?", a: ["Afara", "Acasa", "In pat"], c: 2 } ];
+const quizData = [ { q: "Care a fost primul film vazut impreuna? 🎬", a: ["Unul de groaza", "O comedie proasta", "Nu mai stiu, ma uitam la tine"], c: 2 }, { q: "Unde ne vedem peste 50 de ani? 👵👴", a: ["Pe o plaja", "Impreuna, enervandu ne", "La bingo"], c: 1 }, { q: "Ce animal de companie ne luam? 🐾", a: ["O armata de pisici", "Un caine urias", "Un hamster(seamana cu tine)"], c: 0 } ];
 let currentQ = 0;
 function loadQuiz() {
     if(currentQ >= quizData.length) { 
-        document.querySelector('.quiz-card').innerHTML = `<div class='tape'></div><h3>Bravo iubire! ❤️</h3><p>Ai castigat un pupic!</p>`; 
+        document.querySelector('.quiz-card').innerHTML = `<div class='tape'></div><h3>felicitari</h3><p>ai castigat experienta🤪</p>`; 
         playSuccessSound(); // Sunet de final!
         fireConfetti(50); 
         sendDiscordNotification("🧠 A terminat quizul!"); 
@@ -686,8 +686,43 @@ function checkAnswer(btn, idx, correctIdx) { if(idx === correctIdx) { btn.classL
 // --- UTILS ---
 function popEffect(el) { el.style.transform = `scale(1.1) rotate(0deg)`; setTimeout(() => { el.style.transform = `scale(1) rotate(var(--rot))`; }, 300); }
 function reveal(el) { const b = el.querySelector('.answer-box'); b.style.display = (b.style.display==='block')?'none':'block'; }
-function showInvite() { playSuccessSound(); document.getElementById('modal-overlay').style.display='flex'; }
-function acceptInvite() { document.getElementById('btnReject').style.display = 'none'; playSuccessSound(); const s = document.getElementById('stamp'); s.classList.add('visible'); sendDiscordNotification("💖 A ACCEPTAT INVITATIA! 💖"); fireConfetti(150); setTimeout(() => { document.getElementById('modal-overlay').style.display='none'; }, 3500); }
+
+function showInvite() { 
+    // Resetare la refresh (fara localStorage)
+    playSuccessSound(); 
+    document.getElementById('modal-overlay').style.display='flex'; 
+}
+
+function acceptInvite() { 
+    document.getElementById('btnReject').style.display = 'none'; 
+    playSuccessSound(); 
+    
+    // Doar vizual pe sesiunea curenta
+    lockInviteState();
+    
+    const s = document.getElementById('stamp'); 
+    s.classList.add('visible'); 
+    sendDiscordNotification("💖 A ACCEPTAT INVITATIA! 💖"); 
+    fireConfetti(150); 
+    
+    setTimeout(() => { 
+        document.getElementById('modal-overlay').style.display='none'; 
+    }, 3500); 
+}
+
+function lockInviteState() {
+    const sticky = document.querySelector('.item-invite .sticky');
+    if(sticky) {
+        sticky.classList.add('accepted');
+        sticky.onclick = () => playSuccessSound(); // Doar sunet, fara deschidere
+        sticky.innerHTML = `
+            <div class="tape"></div>
+            <p style="font-weight: bold; color: inherit;">Ne vedem acolo!</p>
+            <div style="font-size: 2rem;">🥂</div>
+        `;
+    }
+}
+
 function moveReject() { const btn = document.getElementById('btnReject'); const x = Math.random() * (window.innerWidth - 100); const y = Math.random() * (window.innerHeight - 50); btn.style.position = 'fixed'; btn.style.left = x + 'px'; btn.style.top = y + 'px'; btn.style.zIndex = 4000; }
 window.onscroll = function() { const btn = document.getElementById('back-to-top'); if(document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { btn.style.display = 'flex'; } else { btn.style.display = 'none'; } };
 function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
