@@ -25,13 +25,48 @@
         <div id="lb-next" class="lb-nav next" onclick="changeLightboxPhoto(1, event)"><i class="fas fa-chevron-right"></i></div>
     </div>
 
-    <div id="login-screen">
-        <div class="login-card">
+    <div id="word-game-screen">
+        <div class="login-card" style="transform: rotate(-2deg);">
+            <div class="tape"></div>
             <h1>heyy hamster ❤️</h1>
-            <p>avem nevoie de ceva pentru a intra... 🤨</p>
-            <input type="text" id="pass" placeholder="ZZLLAAAA" inputmode="numeric">
-            <button class="btn-main" onclick="tryLogin()">Deschide</button>
-            <p class="error-msg" id="err">Mai incearca... 🙈</p>
+            <p style="font-size: 1.3rem; line-height: 2.2; font-family: 'Patrick Hand', cursive;">
+                Ma uit in 
+                <input type="text" id="word1" class="input-blank" placeholder="..."> 
+                tai <br>
+                ca un copil la 
+                <input type="text" id="word2" class="input-blank" placeholder="..."> ✨
+            </p>
+            <button class="btn-main" onclick="checkWords()">Verifica</button>
+            <p class="error-msg" id="word-err">Mai gandeste-te... 🙈</p>
+        </div>
+    </div>
+
+    <div id="login-screen" style="display: none;">
+        <div class="login-card" style="transform: rotate(2deg);">
+            <div class="tape"></div>
+            <h1>heyy hamster ❤️</h1>
+            <p>Care e povestea noastra? 🔐</p>
+            
+            <div id="emoji-display" class="emoji-display"></div>
+
+            <div class="emoji-keypad">
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('🐹')">🐹</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('❤️')">❤️</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('✈️')">✈️</button>
+                
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('🏠')">🏠</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('🍕')">🍕</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('♾️')">♾️</button>
+                
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('🌙')">🌙</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('💍')">💍</button>
+                <button class="emoji-btn" onmousedown="playClickSound()" onclick="typeEmoji('🎁')">🎁</button>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                 <button class="btn-clear" onmousedown="playClickSound()" onclick="clearEmoji()">Sterge</button>
+            </div>
+            <p class="error-msg" id="err">Gresit... mai incearca! 🙈</p>
         </div>
     </div>
 
@@ -51,19 +86,34 @@
         </div>
     </div>
 
+    <div id="wheel-modal" class="wheel-modal" onclick="closeWheel(event)">
+        <div class="wheel-content" onclick="event.stopPropagation()">
+            <span class="close-wheel" onclick="closeWheel(event)">&times;</span>
+            <div class="carnival-lights"></div>
+            <h3>Ce facem azi? 🤔</h3>
+            
+            <div class="randomizer-container">
+                <div id="randomizer-display" class="randomizer-text">?</div>
+            </div>
+            
+            <button class="btn-main" onclick="startRandomizer()">Alege pentru noi!</button>
+            <div id="wheel-result" class="wheel-result" style="display:none;"></div>
+        </div>
+    </div>
+
     <div id="main-content">
 
         <div class="scrap-header">
-            <h1 id="main-title">Lumea Noastra</h1>
+            <h1 id="main-title" onclick="showGameStatus()" style="cursor: help;" title="Cati hamsteri ai gasit?">Lumea Noastra</h1>
         </div>
 
         <div class="scrap-item item-photo-gallery">
             <div class="polaroid" style="transform: rotate(-3deg);">
                 <div class="tape"></div>
                 <div class="photo-wrapper">
-                    <button class="nav-btn prev" onclick="changeMiniPhoto(-1, event)"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-btn prev" onclick="changePolaroidPhoto('main', -1, 'gallery-img', 'gallery-caption', event)"><i class="fas fa-chevron-left"></i></button>
                     <img id="gallery-img" src="res/1.jpg" alt="Noi" onclick="openGallery('main', event)">
-                    <button class="nav-btn next" onclick="changeMiniPhoto(1, event)"><i class="fas fa-chevron-right"></i></button>
+                    <button class="nav-btn next" onclick="changePolaroidPhoto('main', 1, 'gallery-img', 'gallery-caption', event)"><i class="fas fa-chevron-right"></i></button>
                 </div>
                 <div class="caption" id="gallery-caption">Inceputul</div>
             </div>
@@ -124,8 +174,12 @@
         <div class="scrap-item item-polaroid-2">
             <div class="polaroid" style="transform: rotate(3deg);">
                 <div class="tape"></div>
-                <img src="res/2.jpg" alt="Noi" onclick="openGallery('smile', event)">
-                <div class="caption">Zambetul taaaau🫠</div>
+                <div class="photo-wrapper">
+                    <button class="nav-btn prev" onclick="changePolaroidPhoto('smile', -1, 'img-smile', 'cap-smile', event)"><i class="fas fa-chevron-left"></i></button>
+                    <img id="img-smile" src="res/2.jpg" alt="Noi" onclick="openGallery('smile', event)">
+                    <button class="nav-btn next" onclick="changePolaroidPhoto('smile', 1, 'img-smile', 'cap-smile', event)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="caption" id="cap-smile">Zambetul taaaau🫠</div>
             </div>
         </div>
 
@@ -165,8 +219,21 @@
         <div class="scrap-item item-polaroid-3">
             <div class="polaroid" style="transform: rotate(5deg);">
                 <div class="tape"></div>
-                <img src="res/3.jpg" alt="Noi" onclick="openGallery('love', event)">
-                <div class="caption">Te iubesc!</div>
+                <div class="photo-wrapper">
+                    <button class="nav-btn prev" onclick="changePolaroidPhoto('love', -1, 'img-love', 'cap-love', event)"><i class="fas fa-chevron-left"></i></button>
+                    <img id="img-love" src="res/3.jpg" alt="Noi" onclick="openGallery('love', event)">
+                    <button class="nav-btn next" onclick="changePolaroidPhoto('love', 1, 'img-love', 'cap-love', event)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="caption" id="cap-love">Te iubesc!</div>
+            </div>
+        </div>
+
+        <div class="scrap-item item-wheel-ticket">
+            <div class="ticket" onclick="openWheel()">
+                <div class="tape"></div>
+                <div class="ticket-icon">🎡</div>
+                <div class="ticket-text">Nu stii ce sa faci?<br><strong>ÎNVÂRTE!</strong></div>
+                <div class="ticket-stub"></div>
             </div>
         </div>
 
