@@ -728,3 +728,92 @@ window.onscroll = function() { const btn = document.getElementById('back-to-top'
 function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 function initAnimations() { const bg = document.getElementById('bg-animation'); const icons = ['❤️', '⭐', '🦋', '💌', '♾️']; for(let i=0; i<15; i++){ let el = document.createElement('div'); el.className = 'float-item'; el.innerText = icons[Math.floor(Math.random()*icons.length)]; el.style.left = Math.random()*100 + 'vw'; el.style.animationDuration = (Math.random()*5 + 5) + 's'; el.style.fontSize = (Math.random()*20 + 20) + 'px'; bg.appendChild(el); } const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('show'); observer.unobserve(entry.target); } }); }, {threshold:0.1}); document.querySelectorAll('.scrap-item').forEach(el => observer.observe(el)); }
 function fireConfetti(c) { const cols = ['#d63384','#ff8fa3','#ffd700','#4caf50']; for(let i=0; i<c; i++){ let d = document.createElement('div'); d.className='confetti'; d.style.background=cols[Math.floor(Math.random()*cols.length)]; d.style.left=Math.random()*100+'vw'; d.style.top='-10px'; d.style.animationDuration=(Math.random()*3+2)+'s'; document.body.appendChild(d); setTimeout(()=>d.remove(), 5000); } }
+
+// --- SCRATCH CARD ---
+function initScratchCard() {
+    const canvas = document.getElementById('scratch-canvas');
+    if(!canvas) return;
+    
+    // Setam dimensiuni corecte bazate pe parinte
+    const container = canvas.parentElement;
+    canvas.width = container.offsetWidth || 250;
+    canvas.height = container.offsetHeight || 150;
+    
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    
+    // 1. Desenam stratul gri
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#cfd8dc'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 2. Text
+    ctx.font = "20px 'Patrick Hand', cursive";
+    ctx.fillStyle = "#555";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("secret..", canvas.width/2, canvas.height/2);
+    
+    // 3. Pattern
+    for(let i=0; i<canvas.width; i+=10) {
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.fillRect(i, 0, 2, canvas.height);
+    }
+    
+    // Logica Razuire
+    let isDrawing = false;
+    
+    function scratch(e) {
+        if(!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        let clientX = e.clientX;
+        let clientY = e.clientY;
+        if(e.touches && e.touches.length > 0) {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        }
+        
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 35, 0, Math.PI * 2); // Raza MARE (35px) pt razuire usoara
+        ctx.fill();
+        
+        if(Math.random() > 0.8) playSwipeSound(); 
+    }
+    
+    function checkProgress() {
+        try {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let transparent = 0;
+            // Verificam 1 din 50 pixeli (optimizare)
+            for(let i=3; i<imageData.data.length; i+=200) {
+                if(imageData.data[i] === 0) transparent++;
+            }
+            const total = imageData.data.length / 200;
+            
+            if(transparent / total > 0.4) { // Prag redus la 40%
+                canvas.style.transition = 'opacity 0.6s';
+                canvas.style.opacity = '0';
+                playSuccessSound();
+                fireConfetti(30);
+                setTimeout(() => canvas.style.display = 'none', 600);
+                sendDiscordNotification("🎫 A razuit lozul!");
+            }
+        } catch(e) {}
+    }
+    
+    // Listeners
+    canvas.addEventListener('mousedown', (e) => { isDrawing=true; scratch(e); });
+    canvas.addEventListener('mousemove', (e) => { scratch(e); });
+    canvas.addEventListener('mouseup', () => { isDrawing=false; checkProgress(); });
+    canvas.addEventListener('mouseleave', () => { isDrawing=false; });
+    
+    canvas.addEventListener('touchstart', (e) => { isDrawing=true; e.preventDefault(); scratch(e); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
+    canvas.addEventListener('touchend', () => { isDrawing=false; checkProgress(); });
+}
+
+// Pornim cu delay ca sa aiba timp sa se randeze HTML-ul
+setTimeout(initScratchCard, 800);
