@@ -578,7 +578,7 @@ function activateCheatMode() {
 
 // --- LOGIN ---
 let enteredCode = [];
-const correctCode = "🐹❤️♾️🏠";
+const correctCode = "🐹❤️🏠♾️";
 
 function typeEmoji(emoji) {
     if(enteredCode.length < 4) {
@@ -617,6 +617,11 @@ function checkLogin() {
     } else { 
         playErrorSound(); 
         document.getElementById('err').style.display = 'block'; 
+        
+        // Afisam indiciul dupa prima greseala
+        const hint = document.getElementById('hint-msg');
+        if(hint) hint.style.display = 'block';
+        
         const display = document.getElementById('emoji-display');
         display.classList.add('error-shake');
         
