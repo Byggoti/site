@@ -278,13 +278,12 @@ function checkWords() {
         screen.style.opacity = '0';
         setTimeout(() => {
             screen.style.display = 'none';
-            // Afisam ecranul de emoji login
-            const login = document.getElementById('login-screen');
-            login.style.display = 'flex';
-            login.style.opacity = '0';
-            setTimeout(() => { login.style.opacity = '1'; }, 50);
+            // Afisam MAIN CONTENT (Final)
+            document.getElementById('main-content').style.display = 'flex';
+            initGlobalSounds(); initAnimations(); loadQuiz(); fireConfetti(50);
+            initHamsterHunt(); 
             
-            sendDiscordNotification("📝 A completat versurile corect!");
+            sendDiscordNotification("📝 A completat versurile corect si a intrat!");
         }, 600);
     } else {
         playErrorSound();
@@ -610,9 +609,11 @@ function checkLogin() {
         document.getElementById('login-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
-            initGlobalSounds(); initAnimations(); loadQuiz(); fireConfetti(50);
-            initHamsterHunt(); // Pornim vanatoarea!
+            // Afisam Word Game Screen (Pasul 2)
+            const wordScreen = document.getElementById('word-game-screen');
+            wordScreen.style.display = 'flex';
+            wordScreen.style.opacity = '0';
+            setTimeout(() => { wordScreen.style.opacity = '1'; }, 50);
         }, 600);
     } else { 
         playErrorSound(); 
