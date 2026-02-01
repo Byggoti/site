@@ -298,6 +298,7 @@ input { padding: 15px; font-size: 18px; border: 2px solid #ffb7b2; border-radius
 @media (min-width: 900px) {
     .item-photo-gallery { margin-top: 0px; margin-right: 80px; }
     .item-sticky-1 { margin-top: 120px; margin-left: 20px; }
+    .item-apology { margin-top: 40px; margin-left: 30px; } /* Pozitionare */
     .item-player { margin-top: 40px; margin-right: 50px; }
     .item-quiz { margin-top: 150px; margin-left: 60px; }
     .item-invite { margin-top: -20px; margin-right: 100px; }
@@ -347,6 +348,36 @@ input[type=range] { -webkit-appearance: none; width: 100%; background: transpare
 input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: #eee; border-radius: 5px; }
 input[type=range]::-webkit-slider-thumb { height: 16px; width: 16px; border-radius: 50%; background: var(--accent-pink); -webkit-appearance: none; margin-top: -5px; }
 .timers { display: flex; justify-content: space-between; font-size: 0.7rem; font-family: 'Nunito', sans-serif; color: #888; font-weight: bold; }
+
+/* Ripped Paper Apology */
+.ripped-paper {
+    background: #fff;
+    background-image: repeating-linear-gradient(#fff 0px, #fff 24px, #e1f5fe 25px);
+    width: 280px; padding: 30px 20px;
+    position: relative;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    font-family: 'Indie Flower', cursive;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    /* Efect de hartie rupta sus si jos */
+    clip-path: polygon(
+        0% 10px, 5% 0px, 10% 10px, 15% 0px, 20% 10px, 25% 0px, 30% 10px, 35% 0px, 40% 10px, 45% 0px, 50% 10px, 55% 0px, 60% 10px, 65% 0px, 70% 10px, 75% 0px, 80% 10px, 85% 0px, 90% 10px, 95% 0px, 100% 10px,
+        100% calc(100% - 10px), 95% 100%, 90% calc(100% - 10px), 85% 100%, 80% calc(100% - 10px), 75% 100%, 70% calc(100% - 10px), 65% 100%, 60% calc(100% - 10px), 55% 100%, 50% calc(100% - 10px), 45% 100%, 40% calc(100% - 10px), 35% 100%, 30% calc(100% - 10px), 25% 100%, 20% calc(100% - 10px), 15% 100%, 10% calc(100% - 10px), 5% 100%, 0% calc(100% - 10px)
+    );
+}
+.ripped-paper:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 20; }
+.ripped-paper h3 { color: #546e7a; margin: 10px 0 5px 0; font-size: 1.5rem; }
+.apology-text { color: #455a64; font-size: 1.1rem; line-height: 1.4; margin-top: 15px; }
+
+/* Dark Mode Ripped Paper */
+body.dark-mode .ripped-paper {
+    background: #1a2327;
+    background-image: repeating-linear-gradient(#1a2327 0px, #1a2327 24px, #263238 25px);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+}
+body.dark-mode .ripped-paper h3 { color: #ff0055; }
+body.dark-mode .apology-text { color: #b0bec5; }
 
 /* Wheel Modal */
 .wheel-modal {
