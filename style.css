@@ -27,7 +27,7 @@ body {
     min-height: 100vh;
 }
 
-/* --- DARK MODE --- */
+/* ---- DARK MODE ---- */
 body.dark-mode {
     --bg-color: #0f0508;
     --text-color: #ffc2d1;
