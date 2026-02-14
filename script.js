@@ -735,6 +735,38 @@ function scrollToTop() { window.scrollTo({top: 0, behavior: 'smooth'}); }
 function initAnimations() { const bg = document.getElementById('bg-animation'); const icons = ['❤️', '⭐', '🦋', '💌', '♾️']; for(let i=0; i<15; i++){ let el = document.createElement('div'); el.className = 'float-item'; el.innerText = icons[Math.floor(Math.random()*icons.length)]; el.style.left = Math.random()*100 + 'vw'; el.style.animationDuration = (Math.random()*5 + 5) + 's'; el.style.fontSize = (Math.random()*20 + 20) + 'px'; bg.appendChild(el); } const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('show'); observer.unobserve(entry.target); } }); }, {threshold:0.1}); document.querySelectorAll('.scrap-item').forEach(el => observer.observe(el)); }
 function fireConfetti(c) { const cols = ['#d63384','#ff8fa3','#ffd700','#4caf50']; for(let i=0; i<c; i++){ let d = document.createElement('div'); d.className='confetti'; d.style.background=cols[Math.floor(Math.random()*cols.length)]; d.style.left=Math.random()*100+'vw'; d.style.top='-10px'; d.style.animationDuration=(Math.random()*3+2)+'s'; document.body.appendChild(d); setTimeout(()=>d.remove(), 5000); } }
 
+// --- VALENTINE LETTER ---
+function openValentineCard() {
+    playSwipeSound(); // Sunet de hartie
+    setTimeout(() => {
+        playMagicSound();
+        fireConfetti(100);
+    }, 300);
+    
+    document.getElementById('valentine-modal').style.display = 'flex';
+    
+    // Oprim muzica de fundal daca merge, ca sa se auda video-ul
+    const audio = document.getElementById('main-audio');
+    if(!audio.paused) {
+        audio.pause();
+        // Schimbam iconita de play inapoi
+        document.getElementById('play-icon').className = "fas fa-play";
+        document.querySelector('.vinyl-art').parentElement.classList.remove('playing');
+    }
+    
+    sendDiscordNotification("💌 A deschis scrisoarea de Valentine's!");
+}
+
+function closeValentineCard(e) {
+    if(e) e.stopPropagation();
+    
+    // Oprim si video-ul cand inchide
+    const vid = document.getElementById('val-video');
+    if(vid) vid.pause();
+    
+    document.getElementById('valentine-modal').style.display = 'none';
+}
+
 // --- SCRATCH CARD ---
 function initScratchCard() {
     const canvas = document.getElementById('scratch-canvas');

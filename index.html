@@ -267,6 +267,41 @@
             </div>
         </div>
 
+        <div class="scrap-item item-valentine">
+            <div class="valentine-envelope" style="transform: rotate(-5deg);" onclick="openValentineCard()">
+                <div class="tape"></div>
+                <div class="wax-seal">❤️</div>
+                <div class="env-text">VDAYY.. (14.02.26)</div>
+                <span class="click-hint">(deschide)</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Valentine Modal -->
+    <div id="valentine-modal" class="valentine-modal" onclick="closeValentineCard(event)">
+        <div class="letter-content" onclick="event.stopPropagation()">
+            <span class="close-letter" onclick="closeValentineCard(event)">&times;</span>
+            <div class="tape-corner"></div>
+            
+            <h2 class="val-title">Primul nostru Valentine's ❤️</h2>
+            
+            <div class="val-body">
+                <p>Primul nostru valentines day imprenaaa!! 🥂</p>
+                <p>Chiar daca fix azi nu suntem unul langa altul, distanta e doar pentru cateva ore... Esti în gandul meu in fiecare moment iar incepand de maine o sa fie minunattt impreuna!!</p>
+                <p>Un video ce ma duce cu gandul la tineeee</p>
+                <div class="video-container">
+                    <video id="val-video" controls width="100%" style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 15px 0;">
+                        <source src="res/1.mp4" type="video/mp4">
+                        Browser-ul tau nu suporta video.. :(
+                    </video>
+                </div>
+
+                <p>Abia astept sa te strang in bratee! Te iubesc infinittt❤️❤️❤️❤️</p>
+            </div>
+            
+            <div class="val-footer">14 Februarie 2026</div>
+        </div>
     </div>
 
     <div style="text-align: center; margin: 100px 0 50px 0;">
